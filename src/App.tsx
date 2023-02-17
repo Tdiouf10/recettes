@@ -4,6 +4,7 @@ import './App.css'
 import Login from './components/Login'
 import Register from './components/Register'
 import MenuRecette from './pages/common/MenuRecette'
+import Layout from './pages/Layout'
 import Favoris from './pages/favoris/Favoris'
 import ListeRecette from './pages/liste-recette/ListeRecette'
 import Planning from './pages/planning/Planning'
@@ -18,15 +19,16 @@ const App = (): JSX.Element => {
         <Route path="/" element={<Navigate to='/login' />} />
         <Route path="*" element={<Navigate to='/login' />} />
         
-          <Route path="/recettes" element={
+          <Route path="/" element={
             <ProtectedRoute>
               <MenuRecette />
-              <Route path="/liste-recette" element={<ListeRecette />} />
-              <Route path="/favoris" element={<Favoris />} />
-              <Route path="/planning" element={<Planning />} />
-              <Route path="/profil" element={<Profil />} />
             </ProtectedRoute>
-          } />
+            }>
+            <Route path="/liste-recette" element={<ListeRecette />} />
+            <Route path="/favoris" element={<Favoris />} />
+            <Route path="/planning" element={<Planning />} />
+            <Route path="/profil" element={<Profil />} />
+          </Route>
         
         <Route path="/register" element={<Register />} />
         <Route index path="/login" element={<Login />} />

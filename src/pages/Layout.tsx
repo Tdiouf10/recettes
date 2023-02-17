@@ -21,7 +21,9 @@ const Layout = () => {
         <div>
             <h1> Mes recettes</h1>
             <Link to='/register'>Register</Link>
+            <br />
             <Link to='/login'>Login</Link>
+            <br />
             <Link to='/recettes'>Recettes</Link>
             {user && (
                 <Fragment>

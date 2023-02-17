@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Outlet } from 'react-router-dom'
 
 const MenuRecette = (): JSX.Element => {
 
@@ -7,9 +8,12 @@ const MenuRecette = (): JSX.Element => {
     return (
         <header>
             <div>
-                blablabla header
+                header Menu
             </div>
+            <Outlet/>
         </header>
+
+        
     )
 }
 
