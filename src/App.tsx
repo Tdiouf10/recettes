@@ -6,7 +6,8 @@ import Register from './components/Register'
 import MenuRecette from './pages/common/MenuRecette'
 import Layout from './pages/Layout'
 import Favoris from './pages/favoris/Favoris'
-import ListeRecette from './pages/liste-recette/ListeRecette'
+import ListeRecette from './pages/recettes/ListeRecette'
+import DetailsRecette from './pages/recettes/DetailsRecette'
 import Planning from './pages/planning/Planning'
 import Profil from './pages/profil/Profil'
 import AuthProvider from './provider/AuthProvider'
@@ -25,6 +26,7 @@ const App = (): JSX.Element => {
             </ProtectedRoute>
             }>
             <Route path="/liste-recette" element={<ListeRecette />} />
+            <Route path="/recette/:id" element={<DetailsRecette />} />
             <Route path="/favoris" element={<Favoris />} />
             <Route path="/planning" element={<Planning />} />
             <Route path="/profil" element={<Profil />} />

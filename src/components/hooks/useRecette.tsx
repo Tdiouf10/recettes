@@ -9,6 +9,9 @@ interface Recette {
     strCategory: string;
     strTags: string;
     strArea: string;
+    strYoutube: string;
+    strIngredient1: string;
+    strIngredient2: string;
 }
 
 const ListeRecette = () => {
