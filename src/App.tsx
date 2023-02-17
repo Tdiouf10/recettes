@@ -1,6 +1,8 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
+import Login from './components/Login'
+import Register from './components/Register'
 import MenuRecette from './pages/common/MenuRecette'
 import Favoris from './pages/favoris/Favoris'
 import ListeRecette from './pages/liste-recette/ListeRecette'
@@ -26,8 +28,8 @@ const App = (): JSX.Element => {
             </>
           } />
         </ProtectedRoute>
-        <Route path="/register" element={<RegisterForm />} />
-        <Route index path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<Register />} />
+        <Route index path="/login" element={<Login />} />
         
       </Routes>
     </AuthProvider>
