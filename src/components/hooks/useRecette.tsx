@@ -6,6 +6,9 @@ interface Recette {
     strMeal: string;
     strMealThumb: string;
     strInstructions: string;
+    strCategory: string;
+    strTags: string;
+    strArea: string;
 }
 
 const ListeRecette = () => {
