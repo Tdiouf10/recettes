@@ -17,17 +17,17 @@ const App = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<Navigate to='/login' />} />
         <Route path="*" element={<Navigate to='/login' />} />
-        <ProtectedRoute>
+        
           <Route path="/recettes" element={
-            <>
+            <ProtectedRoute>
               <MenuRecette />
               <Route path="/liste-recette" element={<ListeRecette />} />
               <Route path="/favoris" element={<Favoris />} />
               <Route path="/planning" element={<Planning />} />
               <Route path="/profil" element={<Profil />} />
-            </>
+            </ProtectedRoute>
           } />
-        </ProtectedRoute>
+        
         <Route path="/register" element={<Register />} />
         <Route index path="/login" element={<Login />} />
         
