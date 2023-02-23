@@ -1,12 +1,21 @@
+import useFavoris from "../../components/hooks/useFavoris"
 
 const Favoris = (): JSX.Element => {
 
-
+    const FavorisManager = useFavoris()
+    console.log(FavorisManager.FavorisList)
+    FavorisManager.getFavorisList();
+    console.log(FavorisManager.FavorisList)
 
     return (
-        <div>
-            Favoris
-        </div>
+        <>
+            <h2>
+                Favoris
+            </h2>
+            <div>
+                
+            </div>
+        </>
     )
 }
 
