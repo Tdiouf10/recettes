@@ -2,18 +2,30 @@ import useFavoris from "../../components/hooks/useFavoris"
 
 const Favoris = (): JSX.Element => {
 
-    const FavorisManager = useFavoris()
-    console.log(FavorisManager.FavorisList)
-    FavorisManager.getFavorisList();
-    console.log(FavorisManager.FavorisList)
+    const FavorisLists = useFavoris()
+
+    if (!FavorisLists) return (<h2>Chargement...</h2>);
+    console.log('FavorisLists',FavorisLists)
 
     return (
         <>
-            <h2>
+            <h1>
                 Favoris
-            </h2>
+            </h1>
             <div>
-                
+                {Object.keys(FavorisLists).map(favListName => {
+                    console.log('favoris',favListName)
+                return                <div>
+                    <h2><strong>{favListName}</strong></h2>
+                    <div>
+                        {FavorisLists[favListName].map(recette =>
+                         <div>
+                            {recette.strMeal}
+                         </div>       
+                        )}
+                    </div>
+                </div>}
+                )}
             </div>
         </>
     )
