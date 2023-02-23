@@ -20,7 +20,7 @@ const Login = () => {
             if (response.user) {
                 setUser(response.user)
                 localStorage.setItem('@user', JSON.stringify(response.user))
-                navigate('/home')
+                navigate('/liste-recette')
             }
         } catch (error: any) {
             if (error.code === 'auth/user-not-found') {
