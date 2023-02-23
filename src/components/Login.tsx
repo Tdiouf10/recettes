@@ -20,7 +20,7 @@ const Login = () => {
             if (response.user) {
                 setUser(response.user)
                 localStorage.setItem('@user', JSON.stringify(response.user))
-                navigate('/home')
+                navigate('/liste-recette')
             }
         } catch (error: any) {
             if (error.code === 'auth/user-not-found') {
@@ -35,7 +35,6 @@ const Login = () => {
         }
     }
 
-    // Template page connexion react et tailwind
     return (
         <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-900">
             <div className="w-full max-w-md">

@@ -6,6 +6,12 @@ interface Recette {
     strMeal: string;
     strMealThumb: string;
     strInstructions: string;
+    strCategory: string;
+    strTags: string;
+    strArea: string;
+    strYoutube: string;
+    strIngredient1: string;
+    strIngredient2: string;
 }
 
 const useRecette = () => {

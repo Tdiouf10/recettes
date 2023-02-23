@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.recette:hover {
+  transform: scale(1.05);
+}
+
+.break-words {
+  word-break: break-word;
+}
