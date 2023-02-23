@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { db } from '../../firebase'
-import { updateDoc, deleteDoc, doc, collection, getDocs } from "firebase/firestore";
-import ListeRecette from "../../pages/liste-recette/ListeRecette";
+import { useState } from "react";
 
 
 interface Favoris {
