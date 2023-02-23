@@ -44,3 +44,7 @@
 .break-words {
   word-break: break-word;
 }
+
+.heart-icon {
+  font-size: 1.5em;
+}
