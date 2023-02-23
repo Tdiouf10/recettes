@@ -14,7 +14,8 @@ interface Recette {
     strIngredient2: string;
 }
 
-const ListeRecette = () => {
+const useRecette = () => {
+    
     const [recettes, setRecettes] = useState<Recette[]>([]);
 
     useEffect(() => {
@@ -31,4 +32,4 @@ const ListeRecette = () => {
     return recettes;
 };
 
-export default ListeRecette;
+export default useRecette;
