@@ -28,20 +28,20 @@ const Register = () => {
 
         setError(null)
         try {
-            if(password === confirmPassword) {
+            if (password === confirmPassword) {
                 const response = await createUserWithEmailAndPassword(auth, email, password)
                 if (response.user) {
                     navigate('/login')
                 }
             } else {
-                setError('Les mots de passe ne correspondent pas')
+                setError('Passwords do not match')
             }
         } catch (error: any) {
             if (error.code === 'auth/email-already-in-use') {
-                setError('Cet email est déjà utilisé')
+                setError('This email is already in use')
             } else {
                 if (error.code === 'auth/invalid-email') {
-                    setError('Le format de l\'email est invalide')
+                    setError('The email format is invalid')
                 } else {
                     console.error(error)
                 }
@@ -62,14 +62,14 @@ const Register = () => {
                 }
                 <div>
                     <img className="w-auto h-12 mx-auto"
-                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow"/>
+                         src="https://svgsilh.com/svg/2400338.svg" alt="Workflow"/>
                     <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900 dark:text-white">
-                        Créer un compte
+                        Create an account
                     </h2>
                     <p className="mt-2 text-sm text-center text-gray-600 dark:text-gray-400 max-w">
                         Ou
                         <NavLink to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            {' '}se connecter à votre compte
+                            {' '}Login to your account
                         </NavLink>
                     </p>
                     <div className="mt-6">
@@ -81,7 +81,7 @@ const Register = () => {
                                       d="M10 3a7 7 0 00-4.9 11.5h.05a5.5 5.5 0 1110.95 0 7 7 0 10-7-7zm0 12a5 5 0 100-10 5 5 0 000 10z"
                                       clipRule="evenodd"/>
                             </svg>
-                            Se connecter avec Google
+                            Log in with google
                         </button>
                     </div>
                 </div>
@@ -104,7 +104,7 @@ const Register = () => {
                             <div className="space-y-1">
                                 <label htmlFor="password"
                                        className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                                    Mot de passe
+                                    Password
                                 </label>
                                 <div className="mt-1">
                                     <input id="password" name="password" type="password" value={password}
@@ -117,7 +117,7 @@ const Register = () => {
                             <div className="space-y-1">
                                 <label htmlFor="password"
                                        className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                                    Confirmer le mot de passe
+                                    Confirm password
                                 </label>
                                 <div className="mt-1">
                                     <input id="password_confirm" name="password_confirm" type="password"
@@ -129,30 +129,10 @@ const Register = () => {
                                     />
                                 </div>
                             </div>
-
-
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <input id="remember_me" name="remember_me" type="checkbox"
-                                           className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:focus:ring-gray-400"/>
-                                    <label htmlFor="remember_me"
-                                           className="block ml-2 text-sm text-gray-900 dark:text-gray-200">
-                                        Se souvenir de moi
-                                    </label>
-                                </div>
-
-                                <div className="text-sm">
-                                    <a href="#"
-                                       className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-gray-200">
-                                        Mot de passe oublié ?
-                                    </a>
-                                </div>
-                            </div>
-
                             <div>
                                 <button type="submit"
                                         className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    S'inscrire
+                                    Sign up
                                 </button>
                             </div>
                         </form>

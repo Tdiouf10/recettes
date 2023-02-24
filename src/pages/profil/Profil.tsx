@@ -27,7 +27,7 @@ const Profil = () => {
         const auth = getAuth();
         if (auth.currentUser) {
             if (password !== confirmPassword) {
-                console.log("Les mots de passe ne correspondent pas");
+                console.log("Passwords do not match");
             } else {
                 updatePassword(auth.currentUser, password).then(() => {
                     console.log("Password updated!");
@@ -42,11 +42,11 @@ const Profil = () => {
         e.preventDefault();
         try {
             if (password !== confirmPassword) {
-                setError('Les mots de passe ne correspondent pas')
+                setError('Passwords do not match')
             } else if (error.code === 'auth/email-already-in-use') {
-                setError('Cet email est déjà utilisé')
+                setError('This email is already in use')
             } else if (error.code === 'auth/invalid-email') {
-                setError('Le format de l\'email est invalide')
+                setError('The email format is invalid')
             } else {
                 await updateEmailForCurrentUser(email);
                 await updatePasswordForCurrentUser(password);
@@ -62,9 +62,9 @@ const Profil = () => {
             <div className="w-full max-w-md">
                 <div>
                     <img className="w-auto h-12 mx-auto"
-                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow"/>
+                         src="https://svgsilh.com/svg/2400338.svg" alt="Workflow"/>
                     <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900 dark:text-white">
-                        Modifier votre profil
+                        Update your email and password
                     </h2>
                 </div>
                 {
@@ -83,7 +83,7 @@ const Profil = () => {
                                 Email
                             </label>
                             <input id="email" name="email" type="email" autoComplete="email" required
-                                   placeholder="Email"
+                                   placeholder={user.email}
                                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-gray-400 dark:focus:border-gray-400 sm:text-sm"
                                    value={email} onChange={e => setEmail(e.target.value)}/>
                         </div>
@@ -91,23 +91,23 @@ const Profil = () => {
                     <div className="space-y-px">
                         <label htmlFor="password"
                                className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Mot de passe
+                            Password
                         </label>
                         <input id="password" name="password" type="password" autoComplete="current-password"
-                               placeholder="Mot de passe"
+                               placeholder="Password"
                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-gray-400 dark:focus:border-gray-400 sm:text-sm"
                                value={password} onChange={e => setPassword(e.target.value)}/>
                     </div>
                     <div className="space-y-1">
                         <label htmlFor="password"
                                className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Confirmer le mot de passe
+                            Confirm password
                         </label>
                         <div className="mt-1">
                             <input id="password_confirm" name="password_confirm" type="password" value={confirmPassword}
                                    onChange={e => setConfirmPassword(e.target.value)}
                                    autoComplete="current-password"
-                                   placeholder="Confirmer le mot de passe"
+                                   placeholder="Confirm password"
                                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-gray-400 dark:focus:border-gray-400 sm:text-sm"
                             />
                         </div>
@@ -124,7 +124,7 @@ const Profil = () => {
                                           clipRule="evenodd"/>
                                 </svg>
                             </span>
-                            Modifier
+                            Update
                         </button>
                     </div>
                 </form>
