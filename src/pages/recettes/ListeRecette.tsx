@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import ListModale from "../../components/ListModale";
+import PlanningModale from "../../components/PlanningModale";
 import useRecette from '../../components/hooks/useRecette'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faPlus, faClock } from '@fortawesome/free-solid-svg-icons';
 import { collection, query, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 
@@ -20,9 +21,14 @@ const ListeRecette = () => {
     };
 
     const [showModal, setShowModal] = useState(false);
+    const [showPlanningModal, setShowPlanningModal] = useState(false);
 
     const toggleModal = () => {
         setShowModal(!showModal);
+    };
+
+    const togglePlanningModal = () => {
+        setShowPlanningModal(!showPlanningModal);
     };
 
     const filteredRecettes = recettes.filter((recette: any) =>
@@ -68,7 +74,7 @@ const ListeRecette = () => {
                                     <button onClick={() => toggleFavori(recette.idMeal)}>
                                         <FontAwesomeIcon
                                             icon={faHeart}
-                                            color={favoris[recette.idMeal] ? "red" : "white"}
+                                            color={favoris[recette.idMeal] ? "red" : "#BFC9CA"}
                                             className={favoris[recette.idMeal] ? "heart--active heart-icon" : "heart--inactive heart-icon"}
 
                                         />
@@ -94,9 +100,18 @@ const ListeRecette = () => {
                                 >
                                     <FontAwesomeIcon icon={faPlus}/>
                                 </button>
-                                <ListModale isOpen={showModal} onClose={toggleModal}></ListModale>
+                                <ListModale isOpen={showModal} onClose={toggleModal} opacity="opacity-10"></ListModale>
                             </div>
-                            <div className="text-right">
+                            <div className="flex-1">
+                                <button
+                                    className="bg-gray-100 dark:bg-white hover:text-red-600 font-bold py-2 px-4 rounded"
+                                    onClick={togglePlanningModal}
+                                >
+                                    <FontAwesomeIcon icon={faClock}/>
+                                </button>
+                                <PlanningModale isOpen={showPlanningModal} onClose={togglePlanningModal} opacity="opacity-10"></PlanningModale>
+                            </div>
+                            <div className="flex-1 text-right">
                                 <button
                                     className="text-sm font-medium text-indigo-500 dark:text-indigo-600 bg-gray-100 dark:bg-white p-2 rounded hover:underline"
                                     onClick={() => navigate(`/recette/${recette.idMeal}`)}>See more

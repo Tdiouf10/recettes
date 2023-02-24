@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faList } from "@fortawesome/free-solid-svg-icons";
+import {faClock, faHeart, faList} from "@fortawesome/free-solid-svg-icons";
 import ListModale from "../../components/ListModale";
+import PlanningModale from "../../components/PlanningModale";
 
 interface Recette {
     idMeal: string;
@@ -26,9 +27,14 @@ const DetailsRecette = () => {
     };
 
     const [showModal, setShowModal] = useState(false);
+    const [showPlanningModal, setShowPlanningModal] = useState(false);
 
     const toggleModal = () => {
         setShowModal(!showModal);
+    };
+
+    const togglePlanningModal = () => {
+        setShowPlanningModal(!showPlanningModal);
     };
 
     useEffect(() => {
@@ -66,13 +72,22 @@ const DetailsRecette = () => {
                                 >
                                     <FontAwesomeIcon icon={faList} className="ml-5"/>
                                 </button>
-                                <ListModale isOpen={showModal} onClose={toggleModal}></ListModale>
+                                <ListModale isOpen={showModal} onClose={toggleModal} opacity="opacity-80"></ListModale>
+                            </div>
+                            <div>
+                                <button
+                                    className="dark:text-white hover:text-red-600 font-bold py-2 px-4 rounded"
+                                    onClick={togglePlanningModal}
+                                >
+                                    <FontAwesomeIcon icon={faClock}/>
+                                </button>
+                                <PlanningModale isOpen={showPlanningModal} onClose={togglePlanningModal} opacity="opacity-80"></PlanningModale>
                             </div>
                             <div>
                                 <button onClick={() => toggleFavori(idMeal)}>
                                     <FontAwesomeIcon
                                         icon={faHeart}
-                                        color={favoris[idMeal] ? "red" : "white"}
+                                        color={favoris[idMeal] ? "red" : "#BFC9CA"}
                                         className={favoris[idMeal] ? "heart--active heart-icon" : "heart--inactive heart-icon"}
 
                                     />

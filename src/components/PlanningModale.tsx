@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPlateWheat, faList} from '@fortawesome/free-solid-svg-icons';
+import {faPlateWheat, faList, faCalendarDay} from '@fortawesome/free-solid-svg-icons';
+import CustomDatePicker from "../components/DatePicker";
+
 
 type ModaleProps = {
     isOpen: boolean;
@@ -9,7 +11,17 @@ type ModaleProps = {
     opacity: string
 };
 
-const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, opacity }) => {
+const PlanningModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, opacity }) => {
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedList, setSelectedList] = useState("");
+
+    const handleDateChange = (date: Date | null) => {
+        if (date) {
+            setSelectedDate(date);
+            setSelectedList(""); // reset the value of selectedList
+        }
+    };
+
     if (!isOpen) return null;
 
     return (
@@ -45,16 +57,26 @@ const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, opacity 
                                     className="text-lg leading-6 font-medium dark:text-white"
                                     id="modal-headline"
                                 >
-                                    Add recipe to list
+                                    Program the recipe
                                 </h3>
 
-                                <div className="my-10 w-full">
+                                <div className="py-10">
+                                    <p className="mb-2 text-sm font-medium dark:text-white">
+                                        Select a date <FontAwesomeIcon icon={faCalendarDay} className="ml-5"/>
+                                    </p>
+                                    <CustomDatePicker selectedDate={selectedDate} handleDateChange={handleDateChange} />
+
                                     <label htmlFor="countries"
-                                           className="block mb-2 text-sm font-medium dark:text-white">
+                                           className="block mt-5 mb-2 text-sm font-medium dark:text-white">
                                         Select a list <FontAwesomeIcon icon={faList} className="ml-5"/>
                                     </label>
-                                    <select id="countries" className="text-black w-full rounded block p-2.5 bg-gray-300 dark:bg-white">
-                                        <option selected>_</option>
+                                    <select
+                                        id="countries"
+                                        className="text-black w-full rounded block p-2.5 bg-gray-300 dark:bg-white"
+                                        value={selectedList}
+                                        onChange={(event) => setSelectedList(event.target.value)}
+                                    >
+                                        <option value="">_</option>
                                         <option value="US">United States</option>
                                         <option value="CA">Canada</option>
                                         <option value="FR">France</option>
@@ -85,8 +107,9 @@ const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, opacity 
                     </div>
                 </div>
             </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/datepicker.min.js"></script>
         </div>
     );
 };
 
-export default ListModale;
+export default PlanningModale;
