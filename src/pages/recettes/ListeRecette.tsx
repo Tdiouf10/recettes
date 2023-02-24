@@ -62,7 +62,7 @@ const ListeRecette = () => {
         <div className="mt-10">
             <form className="navbar-form text-center" action="" autoComplete="off">
                 <div className="input-group">
-                    <input type="text" name="s" className="form-control p-2 border-b-2 border-b-gray-500"
+                    <input type="text" name="s" className="form-control p-2 border-b-2 border-b-gray-500 rounded"
                            autoComplete="off"
                            placeholder="Search for a Meal..." value={searchQuery}
                            onChange={(event) => setSearchQuery(event.target.value)}/>
@@ -94,10 +94,10 @@ const ListeRecette = () => {
                                 </div>
                             </div>
                             <div className="flex items-baseline my-3">
-                                        <span
-                                            className="bg-teal-200 text-teal-800 text-xs px-2 inline-block rounded-full uppercase font-semibold tracking-wide">
-                                            {recette.strCategory}
-                                        </span>
+                                <span
+                                    className="bg-teal-200 text-teal-800 text-xs px-2 inline-block rounded-full uppercase font-semibold tracking-wide">
+                                    {recette.strCategory}
+                                </span>
                                 <div
                                     className="ml-2 break-words text-gray-800 dark:text-white uppercase text-xs font-semibold tracking-wider">
                                     {recette.strTags}
