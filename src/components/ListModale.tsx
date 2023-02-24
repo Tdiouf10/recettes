@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPlateWheat, faList} from '@fortawesome/free-solid-svg-icons';
+import useFavoris from "./hooks/useFavoris";
 
 type ModaleProps = {
     isOpen: boolean;
@@ -9,6 +10,10 @@ type ModaleProps = {
 };
 
 const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose,children }) => {
+
+
+    console.log('FavorisNameLists')
+
     if (!isOpen) return null;
 
     return (

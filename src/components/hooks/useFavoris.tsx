@@ -8,14 +8,19 @@ import { AuthContext } from "../../provider/AuthProvider";
 type FavorisLists = Record<string, Recette[]>
 
 interface Recette {
-    idMeal: string;
+    idMeal: number;
     strMeal: string;
     strMealThumb: string;
     strInstructions: string;
 }
 
-const useFavoris = () => {
+interface props {
+    action: string;
+}
 
+const useFavoris = ({action}:props) => {
+    const onlyName = action === 'getListNames';
+    const onlyIds = action === 'getIds';
     const {user}: any = useContext(AuthContext)
     const [FavorisList, setFavorisList] = useState<FavorisLists>();
 
@@ -33,8 +38,12 @@ const useFavoris = () => {
             const FavorisListData = [] as any;
             
             for (const key in docData) {
-                const recetteList = await fetchRecettes(docData[key]);
-                FavorisListData[key] = recetteList;
+                onlyName 
+                ? FavorisListData[key] = []
+                : onlyIds 
+                ? FavorisListData[key] = docData[key].map((id:number) => { 
+                    return {idMeal:id, strMeal:'', strMealThumb:'', strInstructions:''}})
+                : FavorisListData[key] = await fetchRecettes(docData[key]);
             }
             setFavorisList(FavorisListData);
         } 
@@ -61,14 +70,7 @@ const useFavoris = () => {
 
 
     /*
-        const updateFavoris = async (id:Number, ) => {
-            try {
-                const docToUpdate = doc(db, 'todos', id)
-                await updateDoc(docToUpdate, { completed })
-            } catch (error) {
-                console.error('Error updating document -> ', error)
-            }
-        }
+        
 
         const removeTodo = async (id) => {
             try {
