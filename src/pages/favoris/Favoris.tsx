@@ -1,8 +1,8 @@
+import React from "react";
+
 import useFavoris from "../../components/hooks/useFavoris"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faPencil} from "@fortawesome/free-solid-svg-icons";
-import ListModale from "../../components/ListModale";
-import React, {useState} from "react";
 
 const Favoris = (): JSX.Element => {
 
@@ -12,9 +12,6 @@ const Favoris = (): JSX.Element => {
 
     return (
         <div>
-            <h1>
-                Favoris
-            </h1>
             <div className="flex flex-wrap justify-center">
                 {Object.keys(FavorisLists).map(favListName => {
                     console.log('favoris',favListName)
