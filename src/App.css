@@ -48,3 +48,13 @@
 .heart-icon {
   font-size: 1.5em;
 }
+
+.delete-btn {
+  display: none;
+}
+
+.flex:hover .delete-btn {
+  display: block;
+}
+
+
