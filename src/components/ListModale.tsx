@@ -7,10 +7,13 @@ type ModaleProps = {
     isOpen: boolean;
     onClose: () => void;
     children?: React.ReactNode;
-    opacity: string
 };
 
-const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, opacity }) => {
+const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children }) => {
+
+    const FavorisNameList = useFavoris({action:'getListNames'});
+    console.log('FavorisNameList',FavorisNameList)
+
     if (!isOpen) return null;
 
     return (
@@ -21,7 +24,7 @@ const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, opacity 
                     aria-hidden="true"
                     onClick={onClose}
                 >
-                    <div className={`absolute inset-0 bg-gray-300 ${opacity}`}></div>
+                    <div className={`absolute inset-0 bg-gray-300 opacity-80`}></div>
                 </div>
                 <span
                     className="hidden sm:inline-block sm:align-middle sm:h-screen"

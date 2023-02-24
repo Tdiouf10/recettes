@@ -112,7 +112,6 @@ const ListeRecette = () => {
                                 >
                                     <FontAwesomeIcon icon={faPlus}/>
                                 </button>
-                                <ListModale isOpen={showModal} onClose={toggleModal} opacity="opacity-10"></ListModale>
                             </div>
                             <div className="flex-1">
                                 <button
@@ -121,7 +120,6 @@ const ListeRecette = () => {
                                 >
                                     <FontAwesomeIcon icon={faClock}/>
                                 </button>
-                                <PlanningModale isOpen={showPlanningModal} onClose={togglePlanningModal} opacity="opacity-10"></PlanningModale>
                             </div>
                             <div className="flex-1 text-right">
                                 <button
@@ -132,6 +130,8 @@ const ListeRecette = () => {
                         </div>
                     </div>
                 ))}
+                <ListModale isOpen={showModal} onClose={toggleModal} />
+                <PlanningModale isOpen={showPlanningModal} onClose={togglePlanningModal} />
             </div>
         </div>
     );

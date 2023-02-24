@@ -72,7 +72,7 @@ const DetailsRecette = () => {
                                 >
                                     <FontAwesomeIcon icon={faList} className="ml-5"/>
                                 </button>
-                                <ListModale isOpen={showModal} onClose={toggleModal} opacity="opacity-80"></ListModale>
+                                <ListModale isOpen={showModal} onClose={toggleModal} />
                             </div>
                             <div>
                                 <button
@@ -81,7 +81,7 @@ const DetailsRecette = () => {
                                 >
                                     <FontAwesomeIcon icon={faClock}/>
                                 </button>
-                                <PlanningModale isOpen={showPlanningModal} onClose={togglePlanningModal} opacity="opacity-80"></PlanningModale>
+                                <PlanningModale isOpen={showPlanningModal} onClose={togglePlanningModal} />
                             </div>
                             <div>
                                 <button onClick={() => toggleFavori(idMeal)}>
@@ -89,7 +89,6 @@ const DetailsRecette = () => {
                                         icon={faHeart}
                                         color={favoris[idMeal] ? "red" : "#BFC9CA"}
                                         className={favoris[idMeal] ? "heart--active heart-icon" : "heart--inactive heart-icon"}
-
                                     />
                                 </button>
                             </div>

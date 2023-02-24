@@ -8,10 +8,9 @@ type ModaleProps = {
     isOpen: boolean;
     onClose: () => void;
     children?: React.ReactNode;
-    opacity: string
 };
 
-const PlanningModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, opacity }) => {
+const PlanningModale: React.FC<ModaleProps> = ({ isOpen, onClose, children }) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedList, setSelectedList] = useState("");
 
@@ -32,7 +31,7 @@ const PlanningModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, opac
                     aria-hidden="true"
                     onClick={onClose}
                 >
-                    <div className={`absolute inset-0 bg-gray-300 ${opacity}`}></div>
+                    <div className={`absolute inset-0 bg-gray-300 opacity-80`}></div>
                 </div>
                 <span
                     className="hidden sm:inline-block sm:align-middle sm:h-screen"
