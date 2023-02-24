@@ -25,6 +25,8 @@ const Login = () => {
         } catch (error: any) {
             if (error.code === 'auth/user-not-found') {
                 setError('Votre email ou mot de passse est incorrect')
+            } else if (error.code === 'auth/wrong-password') {
+                setError('Votre email ou mot de passse est incorrect')
             } else {
                 if (error.code === 'auth/invalid-email') {
                     setError('Le format de l\'email est invalide')
@@ -51,6 +53,16 @@ const Login = () => {
                         </NavLink>
                     </p>
                 </div>
+
+                {
+                    error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4"
+                                 role="alert">
+                    <strong className="font-bold">Erreur !</strong>
+                    <span className="block sm:inline">{error}</span>
+                </div>
+
+                }
+
                 <div className="mt-8">
                     <div className="mt-6">
                         <form action="#" method="POST" className="space-y-6" onSubmit={signIn}>
