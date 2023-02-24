@@ -1,9 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
 import ListModale from "../../components/ListModale";
+import PlanningModale from "../../components/PlanningModale";
 import useRecette from '../../components/hooks/useRecette'
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faPlus, faClock } from '@fortawesome/free-solid-svg-icons';
+import { collection, query, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 import { AuthContext } from "../../provider/AuthProvider";
 import FavorisManager from "../../components/FavorisManager";
 import useFavoris from "../../components/hooks/useFavoris";
@@ -30,9 +33,14 @@ const ListeRecette = () => {
     },[Favoris])
 
     const [showModal, setShowModal] = useState(false);
+    const [showPlanningModal, setShowPlanningModal] = useState(false);
 
     const toggleModal = () => {
         setShowModal(!showModal);
+    };
+
+    const togglePlanningModal = () => {
+        setShowPlanningModal(!showPlanningModal);
     };
 
     const filteredRecettes = recettes.filter((recette: any) =>
@@ -40,6 +48,15 @@ const ListeRecette = () => {
         recette.strCategory?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         recette.strTags?.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+
+    const q = query(collection(db, "Favoris"));
+    getDocs(q)
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, " => ", doc.data());
+            });
+        });
 
     return (
         <div className="mt-10">
@@ -69,7 +86,7 @@ const ListeRecette = () => {
                                     <button onClick={() => toggleFavori(recette.idMeal)}>
                                         <FontAwesomeIcon
                                             icon={faHeart}
-                                            color={favoris[recette.idMeal] ? "red" : "white"}
+                                            color={favoris[recette.idMeal] ? "red" : "#BFC9CA"}
                                             className={favoris[recette.idMeal] ? "heart--active heart-icon" : "heart--inactive heart-icon"}
 
                                         />
@@ -77,10 +94,12 @@ const ListeRecette = () => {
                                 </div>
                             </div>
                             <div className="flex items-baseline my-3">
-                                    <span className="bg-teal-200 text-teal-800 text-xs px-2 inline-block rounded-full uppercase font-semibold tracking-wide">
-                                        {recette.strCategory}
-                                    </span>
-                                <div className="ml-2 break-words text-gray-800 dark:text-white uppercase text-xs font-semibold tracking-wider">
+                                        <span
+                                            className="bg-teal-200 text-teal-800 text-xs px-2 inline-block rounded-full uppercase font-semibold tracking-wide">
+                                            {recette.strCategory}
+                                        </span>
+                                <div
+                                    className="ml-2 break-words text-gray-800 dark:text-white uppercase text-xs font-semibold tracking-wider">
                                     {recette.strTags}
                                 </div>
                             </div>
@@ -91,13 +110,24 @@ const ListeRecette = () => {
                                     className="bg-gray-100 dark:bg-white hover:text-red-600 font-bold py-2 px-4 rounded"
                                     onClick={toggleModal}
                                 >
-                                    <FontAwesomeIcon icon={faPlus} />
+                                    <FontAwesomeIcon icon={faPlus}/>
                                 </button>
-                                <ListModale isOpen={showModal} onClose={toggleModal}></ListModale>
+                                <ListModale isOpen={showModal} onClose={toggleModal} opacity="opacity-10"></ListModale>
                             </div>
-                            <div className="text-right">
-                                <button className="text-sm font-medium text-indigo-500 dark:text-indigo-600 bg-gray-100 dark:bg-white p-2 rounded hover:underline"
-                                        onClick={() => navigate(`/recette/${recette.idMeal}`)}>See more</button>
+                            <div className="flex-1">
+                                <button
+                                    className="bg-gray-100 dark:bg-white hover:text-red-600 font-bold py-2 px-4 rounded"
+                                    onClick={togglePlanningModal}
+                                >
+                                    <FontAwesomeIcon icon={faClock}/>
+                                </button>
+                                <PlanningModale isOpen={showPlanningModal} onClose={togglePlanningModal} opacity="opacity-10"></PlanningModale>
+                            </div>
+                            <div className="flex-1 text-right">
+                                <button
+                                    className="text-sm font-medium text-indigo-500 dark:text-indigo-600 bg-gray-100 dark:bg-white p-2 rounded hover:underline"
+                                    onClick={() => navigate(`/recette/${recette.idMeal}`)}>See more
+                                </button>
                             </div>
                         </div>
                     </div>

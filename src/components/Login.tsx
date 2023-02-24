@@ -24,10 +24,12 @@ const Login = () => {
             }
         } catch (error: any) {
             if (error.code === 'auth/user-not-found') {
-                setError('Votre email ou mot de passse est incorrect')
+                setError('Your email or password is incorrect')
+            } else if (error.code === 'auth/wrong-password') {
+                setError('Your email or password is incorrect')
             } else {
                 if (error.code === 'auth/invalid-email') {
-                    setError('Le format de l\'email est invalide')
+                    setError('The email format is invalid')
                 } else {
                     console.error(error)
                 }
@@ -40,17 +42,27 @@ const Login = () => {
             <div className="w-full max-w-md">
                 <div>
                     <img className="w-auto h-12 mx-auto"
-                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow"/>
+                         src="https://svgsilh.com/svg/2400338.svg"/>
                     <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900 dark:text-white">
-                        Se connecter à votre compte
+                        Login to your account
                     </h2>
                     <p className="mt-2 text-sm text-center text-gray-600 dark:text-gray-400 max-w">
                         Ou
                         <NavLink to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            {' '}créer un compte
+                            {' '}create an account
                         </NavLink>
                     </p>
                 </div>
+
+                {
+                    error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4"
+                                 role="alert">
+                    <strong className="font-bold">Erreur !</strong>
+                    <span className="block sm:inline">{error}</span>
+                </div>
+
+                }
+
                 <div className="mt-8">
                     <div className="mt-6">
                         <form action="#" method="POST" className="space-y-6" onSubmit={signIn}>
@@ -82,19 +94,11 @@ const Login = () => {
                             </div>
 
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <input id="remember_me" name="remember_me" type="checkbox"
-                                           className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:focus:ring-gray-400"/>
-                                    <label htmlFor="remember_me"
-                                           className="block ml-2 text-sm text-gray-900 dark:text-gray-200">
-                                        Se souvenir de moi
-                                    </label>
-                                </div>
 
                                 <div className="text-sm">
                                     <a href="#"
                                        className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-gray-200">
-                                        Mot de passe oublié ?
+                                        Forgot your password ?
                                     </a>
                                 </div>
                             </div>
@@ -102,7 +106,7 @@ const Login = () => {
                             <div>
                                 <button type="submit"
                                         className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Se connecter
+                                    Log in
                                 </button>
                             </div>
                         </form>
