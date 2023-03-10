@@ -1,12 +1,10 @@
-import React, {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import ListModale from "../../components/ListModale";
 import PlanningModale from "../../components/PlanningModale";
 import useRecette from '../../components/hooks/useRecette'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faPlus, faClock } from '@fortawesome/free-solid-svg-icons';
-import { collection, query, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
 import { AuthContext } from "../../provider/AuthProvider";
 import FavorisManager from "../../components/FavorisManager";
 import useFavoris from "../../components/hooks/useFavoris";
@@ -15,12 +13,14 @@ import useFavoris from "../../components/hooks/useFavoris";
 const ListeRecette = () => {
 
     const {user}: any = useContext(AuthContext)
-    const recettes = useRecette();
-    const Favoris = useFavoris({action:'getIds'});
-    const recetteIds =  Favoris && Object.assign({}, ...(Object.values(Favoris).map(rs => rs.map(r => {return {[r.idMeal]: true}})).flat()));
-
     const navigate = useNavigate();
+
+    const [selectedRecette, setSelectedRecette] = useState<number>(-1);
     const [favoris, setFavoris] = useState<{ [key: number]: boolean }>({});
+    
+    const Favoris = useFavoris({action:'getNamesAndIds',refresh:selectedRecette});
+    const recettes = useRecette();
+    const recetteIds =  Favoris && Object.assign({}, ...(Favoris["Mes Favoris"].map(r => {return {[r.idMeal]: true}})));
     const [searchQuery, setSearchQuery] = useState("");
 
     const toggleFavori = (id: number) => {  
@@ -35,7 +35,8 @@ const ListeRecette = () => {
     const [showModal, setShowModal] = useState(false);
     const [showPlanningModal, setShowPlanningModal] = useState(false);
 
-    const toggleModal = () => {
+    const toggleModal = (recetteId:number) => {
+        setSelectedRecette(recetteId)
         setShowModal(!showModal);
     };
 
@@ -48,15 +49,6 @@ const ListeRecette = () => {
         recette.strCategory?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         recette.strTags?.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-
-    const q = query(collection(db, "Favoris"));
-    getDocs(q)
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, " => ", doc.data());
-            });
-        });
 
     return (
         <div className="mt-10">
@@ -73,8 +65,8 @@ const ListeRecette = () => {
                 </div>
             </form>
             <div className="flex flex-wrap justify-center">
-                {filteredRecettes.map((recette: any) => (
-                    <div
+                {filteredRecettes.map(recette => (
+                    <div key={recette.idMeal}
                         className="w-full max-w-sm my-10 mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
                         <img className="object-cover w-full h-56" src={recette.strMealThumb} alt={recette.strMeal}/>
                         <div className="p-4">
@@ -88,7 +80,6 @@ const ListeRecette = () => {
                                             icon={faHeart}
                                             color={favoris[recette.idMeal] ? "red" : "#BFC9CA"}
                                             className={favoris[recette.idMeal] ? "heart--active heart-icon" : "heart--inactive heart-icon"}
-
                                         />
                                     </button>
                                 </div>
@@ -108,7 +99,7 @@ const ListeRecette = () => {
                             <div className="flex-1">
                                 <button
                                     className="bg-gray-100 dark:bg-white hover:text-red-600 font-bold py-2 px-4 rounded"
-                                    onClick={toggleModal}
+                                    onClick={() => toggleModal(recette.idMeal)}
                                 >
                                     <FontAwesomeIcon icon={faPlus}/>
                                 </button>
@@ -130,7 +121,7 @@ const ListeRecette = () => {
                         </div>
                     </div>
                 ))}
-                <ListModale isOpen={showModal} onClose={toggleModal} />
+                <ListModale isOpen={showModal} onClose={() => toggleModal(-1)} recetteId={selectedRecette} />
                 <PlanningModale isOpen={showPlanningModal} onClose={togglePlanningModal} />
             </div>
         </div>

@@ -6,7 +6,7 @@ import React, {useState} from "react";
 
 const Favoris = (): JSX.Element => {
 
-    const FavorisLists = useFavoris({action:'getAll'})
+    const FavorisLists = useFavoris({action:'getAll',refresh:2})
 
     if (!FavorisLists) return (<h2>Chargement...</h2>);
 
@@ -17,7 +17,6 @@ const Favoris = (): JSX.Element => {
             </h1>
             <div className="flex flex-wrap justify-center">
                 {Object.keys(FavorisLists).map(favListName => {
-                    console.log('favoris',favListName)
                 return (
                     <div
                         className="w-full max-w-sm my-10 mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">

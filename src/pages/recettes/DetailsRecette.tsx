@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faClock, faHeart, faList} from "@fortawesome/free-solid-svg-icons";
 import ListModale from "../../components/ListModale";
 import PlanningModale from "../../components/PlanningModale";
+import useFavoris from '../../components/hooks/useFavoris';
+import FavorisManager from '../../components/FavorisManager';
+import { AuthContext } from '../../provider/AuthProvider';
 
 interface Recette {
-    idMeal: string;
+    idMeal: number;
     strMeal: string;
     strMealThumb: string;
     strInstructions: string;
@@ -17,17 +20,25 @@ interface Recette {
 }
 
 const DetailsRecette = () => {
-    const { id } = useParams();
+    const id = Number(useParams().id);
+    const {user}: any = useContext(AuthContext)
+
     const [recette, setRecette] = useState(null);
-
-    const [favoris, setFavoris] = useState<{ [key: string]: boolean }>({});
-
-    const toggleFavori = (id: string) => {
-        setFavoris((prevState) => ({ ...prevState, [id]: !prevState[id] }));
-    };
-
+    const [favoris, setFavoris] = useState<{ [key: number]: boolean }>({});
     const [showModal, setShowModal] = useState(false);
     const [showPlanningModal, setShowPlanningModal] = useState(false);
+
+    const toggleFavori = (id: number) => {
+        setFavoris((prevState) => ({ ...prevState, [id]: !prevState[id] }));
+        FavorisManager.updateFavoris('Mes Favoris', id, !favoris[id] , user.uid);
+    };
+
+    const Favoris = useFavoris({action:'getNamesAndIds',refresh:showModal?0:1});
+    const recetteIds =  Favoris && Object.assign({}, ...(Favoris["Mes Favoris"].map(r => {return {[r.idMeal]: true}})));
+
+    useEffect(() => {
+        Favoris && setFavoris(recetteIds)
+    },[Favoris])
 
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -72,7 +83,7 @@ const DetailsRecette = () => {
                                 >
                                     <FontAwesomeIcon icon={faList} className="ml-5"/>
                                 </button>
-                                <ListModale isOpen={showModal} onClose={toggleModal} />
+                                <ListModale isOpen={showModal} onClose={toggleModal} recetteId={id?id:-1} />
                             </div>
                             <div>
                                 <button

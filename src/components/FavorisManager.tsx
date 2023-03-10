@@ -3,41 +3,45 @@ import { db } from "../firebase";
 
 
 const FavorisManager = {
-    test:'tes',
-    updateFavoris: async (listName:string, id:number, isAdd:boolean, uid:string) => {
+
+    updateFavoris: async (listName:string|string[], id:number, isAdd:boolean, uid:string) => {
+        console.log(isAdd?'add ':'remove ',id,' from ',listName);
         const docRef  = doc(db, 'Favoris', uid)
         const docSnap = await getDoc(docRef);
         id = Number(id);
+
         if (docSnap.exists()) {
             
             const docData = docSnap.data();
-            const listData = docData[listName];
-            if (!isAdd && !listData) return;
+            if (typeof listName === 'string') listName = [listName];
 
-            if (isAdd) {
-                listData.push(id);
-            } else {
-                const index = listData.indexOf(id);
-                if (index >= 0) {
-                    
-                    listData.splice(index, 1); // 2nd parameter means remove one item only
+            listName.forEach(theListName => {
+                const listData = docData[theListName];
+                if (!isAdd && !listData) {console.log('Tried to delete from an inexisting list'); return false};
+                if (isAdd) {
+                    listData.push(id);
+                } else {
+                    const index = listData.indexOf(id);
+                    if (index >= 0) {
+                        listData.splice(index, 1); // 2nd parameter means remove one item only
+                    } else { 
+                        console.log("l'element à supprimer n'a pas été trouvé");
+                        return false;
+                    }
                 }
-            }
-            docData[listName] = listData;
+                docData[theListName] = listData;
+            })
             await updateDoc(docRef, docData)
-            
-            
-
-          } else {
-            // doc.data() will be undefined in this case
+            return true
+        } else {
             console.log("No such document!");
-          }
-        try {
-            
-            //await updateDoc(docRef, )
-        } catch (error) {
-            console.error('Error updating document -> ', error)
+            return false;
         }
+    },
+
+    updateMultipleFavorisList: async (addList:string[], removeList:string[], recId:number, uid:string) => {
+        if (removeList.length > 0) await FavorisManager.updateFavoris(removeList,recId,false,uid);
+        if (addList.length > 0) await FavorisManager.updateFavoris(addList,recId,true,uid);
     }
 }
 

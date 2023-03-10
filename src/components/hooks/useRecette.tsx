@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 interface Recette {
-    idMeal: string;
+    idMeal: number;
     strMeal: string;
     strMealThumb: string;
     strInstructions: string;

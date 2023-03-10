@@ -16,17 +16,19 @@ interface Recette {
 
 interface props {
     action: string;
+    refresh: number;
 }
 
-const useFavoris = ({action}:props) => {
+const useFavoris = ({action, refresh}:props) => {
+    
     const onlyName = action === 'getListNames';
-    const onlyIds = action === 'getIds';
+    const onlyNameAndIds = action === 'getNamesAndIds';
     const {user}: any = useContext(AuthContext)
     const [FavorisList, setFavorisList] = useState<FavorisLists>();
 
     useEffect(() => {
         fetchFavorisList();
-    }, [])
+    }, [refresh])
 
     async function fetchFavorisList() {
 
@@ -40,7 +42,7 @@ const useFavoris = ({action}:props) => {
             for (const key in docData) {
                 onlyName 
                 ? FavorisListData[key] = []
-                : onlyIds 
+                : onlyNameAndIds 
                 ? FavorisListData[key] = docData[key].map((id:number) => { 
                     return {idMeal:id, strMeal:'', strMealThumb:'', strInstructions:''}})
                 : FavorisListData[key] = await fetchRecettes(docData[key]);

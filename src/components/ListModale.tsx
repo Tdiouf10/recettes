@@ -1,20 +1,40 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPlateWheat, faList} from '@fortawesome/free-solid-svg-icons';
 import useFavoris from "./hooks/useFavoris";
+import FavorisManager from "./FavorisManager";
+import { AuthContext } from "../provider/AuthProvider";
 
 type ModaleProps = {
     isOpen: boolean;
     onClose: () => void;
     children?: React.ReactNode;
+    recetteId: number;
 };
 
-const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children }) => {
+const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children, recetteId }) => {
+    recetteId = Number(recetteId);
+    const {user}: any = useContext(AuthContext)
 
-    const FavorisNameList = useFavoris({action:'getListNames'});
-    console.log('FavorisNameList',FavorisNameList)
+    const FavorisList = useFavoris({action:'getNamesAndIds',refresh:isOpen?0:1});
+    const AllFavorisNameList = FavorisList ? Object.keys(FavorisList) : [];
+    const RecetteListNames = FavorisList ? AllFavorisNameList.filter(listName => FavorisList[listName].filter(rec => rec.idMeal === recetteId).length > 0) :[];
 
-    if (!isOpen) return null;
+    const [checkedCB, setCheckedCB] = useState<boolean[]>([])
+    const HandleValidation = async () => {
+        const checkedList = Array.from(document.querySelectorAll('.FavorisCB:checked') as NodeListOf<HTMLInputElement>).map(cb => cb.value);
+        const addList = checkedList.filter(listname => !RecetteListNames.includes(listname))
+        const removeList = RecetteListNames.filter(listname => !checkedList.includes(listname))
+        await FavorisManager.updateMultipleFavorisList(addList,removeList,recetteId,user.uid)
+        onClose();
+    }
+
+    useEffect(() => {
+        // console.log(AllFavorisNameList, RecetteListNames,recetteId);
+        setCheckedCB(AllFavorisNameList.map(listName => RecetteListNames.includes(listName)));
+    },[FavorisList])
+
+    if (!isOpen || recetteId===-1) return null;
 
     return (
         <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -57,13 +77,20 @@ const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children }) => {
                                            className="block mb-2 text-sm font-medium dark:text-white">
                                         Select a list <FontAwesomeIcon icon={faList} className="ml-5"/>
                                     </label>
-                                    <select id="countries" className="text-black w-full rounded block p-2.5 bg-gray-300 dark:bg-white">
-                                        <option selected>_</option>
-                                        <option value="US">United States</option>
-                                        <option value="CA">Canada</option>
-                                        <option value="FR">France</option>
-                                        <option value="DE">Germany</option>
-                                    </select>
+                                    {AllFavorisNameList.map((listName, i) => {
+                                        // console.log(listName,checkedCB[i]); 
+                                        return <div key={listName}>
+                                            <input type="checkbox"
+                                                   className="FavorisCB"
+                                                   id={listName}
+                                                   name={listName}
+                                                   value={listName}
+                                                   readOnly={true/*juste pour eviter le warning*/}
+                                                   onClick={() => setCheckedCB((prevState) => ({ ...prevState, [i]: !prevState[i] }))}
+                                                   checked={checkedCB[i]} />
+                                            <label htmlFor={listName} className='dark:text-white'>{listName}</label>
+                                        </div>    }                                   
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -71,8 +98,9 @@ const ListModale: React.FC<ModaleProps> = ({ isOpen, onClose, children }) => {
 
                     <div className="flex items-center bg-gray-100 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                         <span className="flex-1 w-full text-center">
-                          <button type="button" className="w-50 py-2 px-5 text-white hover:text-black rounded bg-green-600 hover:bg-green-400"
-                          >
+                          <button type="button" 
+                                  className="w-50 py-2 px-5 text-white hover:text-black rounded bg-green-600 hover:bg-green-400"
+                                  onClick={HandleValidation}>
                             Add
                           </button>
                         </span>
