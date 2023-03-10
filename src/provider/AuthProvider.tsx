@@ -9,7 +9,7 @@ const AuthProvider = ({ children } : any) => {
 
     return (
         <AuthContext.Provider value={{ user, setUser, error, setError }}>
-            {children}
+            <div className="min-h-screen bg-blue-50 dark:bg-gray-400">{children}</div>
         </AuthContext.Provider>
     )
 }

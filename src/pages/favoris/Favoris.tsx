@@ -1,8 +1,8 @@
+import React from "react";
+
 import useFavoris from "../../components/hooks/useFavoris"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash, faPencil} from "@fortawesome/free-solid-svg-icons";
-import ListModale from "../../components/ListModale";
-import React, {useState} from "react";
+import {faTrash, faDeleteLeft} from "@fortawesome/free-solid-svg-icons";
 
 const Favoris = (): JSX.Element => {
 
@@ -12,9 +12,6 @@ const Favoris = (): JSX.Element => {
 
     return (
         <div>
-            <h1>
-                Favoris
-            </h1>
             <div className="flex flex-wrap justify-center">
                 {Object.keys(FavorisLists).map(favListName => {
                 return (
@@ -25,15 +22,7 @@ const Favoris = (): JSX.Element => {
                                 <h3 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">{favListName}</h3>
                             </div>
                             <div className="mx-2">
-                                <button>
-                                    <FontAwesomeIcon
-                                        icon={faPencil}
-                                        color="green"
-                                    />
-                                </button>
-                            </div>
-                            <div className="mx-2">
-                                <button>
+                                <button className="dark:bg-white dark:px-2 dark:rounded">
                                     <FontAwesomeIcon
                                         icon={faTrash}
                                         color="red"
@@ -43,9 +32,16 @@ const Favoris = (): JSX.Element => {
                         </div>
                         <div className="bg-gray-100 dark:bg-gray-700 dark:text-white p-4">
                             {FavorisLists[favListName].map(recette =>
-                                 <div>
-                                    {recette.strMeal}
-                                 </div>
+                                <div className="flex hover:text-black hover:bg-gray-200 hover:px-2 hover:rounded">
+                                    <div className="flex-1">
+                                        {recette.strMeal}
+                                    </div>
+                                    <div className="text-right">
+                                        <button className="delete-btn">
+                                            <FontAwesomeIcon icon={faDeleteLeft} color="red" />
+                                        </button>
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
