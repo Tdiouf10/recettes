@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { db } from '../../firebase'
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthContext } from "../../provider/AuthProvider";
 
 
@@ -48,7 +48,11 @@ const useFavoris = ({action, refresh}:props) => {
                 : FavorisListData[key] = await fetchRecettes(docData[key]);
             }
             setFavorisList(FavorisListData);
-        } 
+        } else {
+            await setDoc(doc(db, "Favoris", user.uid), {
+                "Mes Favoris": []
+            });
+        }
     }
 
     async function fetchRecettes(RecetteIds:number[]) {

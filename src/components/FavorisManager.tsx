@@ -1,4 +1,5 @@
 import { doc, getDoc, updateDoc } from "@firebase/firestore";
+import { deleteField, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 
@@ -42,6 +43,39 @@ const FavorisManager = {
     updateMultipleFavorisList: async (addList:string[], removeList:string[], recId:number, uid:string) => {
         if (removeList.length > 0) await FavorisManager.updateFavoris(removeList,recId,false,uid);
         if (addList.length > 0) await FavorisManager.updateFavoris(addList,recId,true,uid);
+    },
+
+    addList: async (listName:string, uid:string) => {
+
+        const docRef  = doc(db, 'Favoris', uid)
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const docData = docSnap.data();
+            if (!docData[listName]) docData[listName] = [];
+            console.log('Liste '+listName+' ajouté');
+            await updateDoc(docRef, docData)
+            return true
+        } else {
+            console.log("No such document!");
+            return false;
+        }
+    },
+
+    deleteList: async (listName:string, uid:string) => {
+        const docRef  = doc(db, 'Favoris', uid)
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const docData = docSnap.data();
+            console.log('Liste '+listName+' supprimé');
+            docData[listName] = deleteField();
+            await updateDoc(docRef, docData)
+            return true
+        } else {
+            console.log("No such document!");
+            return false;
+        }
     }
 }
 
